@@ -177,6 +177,8 @@
 
 .catalog-link .txt-decorator:after {
   content: "";
+  position: absolute;
+  bottom: 0;
   display: inline-block;
   vertical-align: bottom;
   height: 1px;
