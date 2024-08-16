@@ -135,16 +135,18 @@
   font-weight: 700;
   line-height: clamp(1.2375rem, 1.158rem + 0.3976vw, 1.65rem);
   color: #403f3f;
-  /* padding: 0 20px 0 40px; */
   padding-top: clamp(0.9375rem, 0.8239rem + 0.5682vw, 1.25rem);
+}
+
+@media screen and (max-width: 900px) {
+  .catalog-link {
+    grid-template-columns: 30px 1fr;
+  }
 }
 
 .catalog-link::before {
   content: "";
   display: inline-block;
-  /* position: absolute;
-  left: 0;
-  bottom: 0; */
   width: 17px;
   height: 20px;
   background-image: url(./images/link__icon.png);
