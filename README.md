@@ -1,4 +1,27 @@
+# ВАЖНО !!!
+
+#### Для страницы забираем стили хранящиеся в файле - style.css
+
+#### Файл - styles-from-site.css - не берем.
+
+#### это стили скопированные с сайта для отображения корректной разметки при разработке
+
+### Контент/скрипт страницы привязан к элементу &lt;section&gt; с &lt;id="catalog"&gt;
+
+```javascript
+<section id="catalog" class="sempling-list">
+```
+
+### Для отработки скрипта дублируем название в data атрибут &lt;data-text="Дротові"&gt;
+
+```javascript
+<span class="txt-decorator" data-text="Дротові">
+  Дротові
+</span>
+```
+
 # Секция с Карточкой продукта
+
 ```javascript
 <div class="product-sampling-section with-catalog-redirect brand-style">
   <h2 class="section-title">Популярні бренди</h2>

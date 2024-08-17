@@ -127,8 +127,9 @@
 }
 
 .catalog-link {
+  flex: 1;
   display: grid;
-  grid-template-columns: 40px 1fr;
+  grid-template-columns: 35px 1fr;
   grid-template-rows: repeat(2, auto);
   position: relative;
   font-size: clamp(1.125rem, 0.9886rem + 0.6818vw, 1.5rem);
@@ -140,7 +141,7 @@
 
 @media screen and (max-width: 900px) {
   .catalog-link {
-    grid-template-columns: 30px 1fr;
+    grid-template-columns: 25px 1fr;
   }
 }
 
@@ -166,16 +167,25 @@
 }
 
 .catalog-link .txt-decorator {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  line-clamp: 2;
-  -webkit-line-clamp: 2;
+  --padding-bottom: 6px;
+  --lines: 3;
+  display: inline-block;
+  max-height: calc(
+    var(--lines) * clamp(1.2375rem, 1.158rem + 0.3976vw, 1.65rem) +
+      var(--padding-bottom)
+  );
   grid-column-start: 2;
   grid-row-start: 1;
   align-self: flex-start;
   overflow: hidden;
   position: relative;
-  padding-bottom: 4px;
+  padding-bottom: var(--padding-bottom);
+}
+
+@media screen and (min-width: 1200px) {
+  .catalog-link .txt-decorator {
+    --lines: 2;
+  }
 }
 
 .catalog-link .txt-decorator:after {
