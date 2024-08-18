@@ -560,49 +560,84 @@
 				/Windows Phone/i
 			];
 
-			return toMatch.some( ( toMatchItem ) => {
-				return navigator.userAgent.match( toMatchItem );
-			} );
+			return toMatch.some((toMatchItem) => {
+				return navigator.userAgent.match(toMatchItem);
+			});
 		}
 
-		function clampLinkText( lines = 2 ) {
+		function clampLinkText(lines = 2) {
 			//some delay to get correct dimensions after resizing or changing the orientation of the mobile device screen
-			const tId = setTimeout( () => {
-				const samplingSections = document.querySelectorAll( '.product-sampling-section:not(.brand-style)' );
-				samplingSections?.forEach( item => {
-					const prdCards = item.querySelectorAll( '.product-card' );
+			const tId = setTimeout(() => {
+				const samplingSections = document.querySelectorAll('.product-sampling-section:not(.brand-style)');
+				samplingSections?.forEach(item => {
+					const prdCards = item.querySelectorAll('.product-card');
 
-					prdCards.forEach( cardItem => {
-						prepareClampingText( cardItem, lines );
-					} )
-				} )
-				clearTimeout( tId )
-			}, 50 )
+					prdCards.forEach(cardItem => {
+						prepareClampingText(cardItem, lines);
+					})
+				})
+				clearTimeout(tId)
+			}, 50)
 		}
 
-		function prepareClampingText( productCard, lines ) {
-			if ( null != productCard ) {
-				const txtDecorator = productCard.querySelector( '.txt-decorator' );
-				if ( null != txtDecorator ) {
-					const txtDecoratorWidth = getComputedStyle( txtDecorator ).width;
+		function prepareClampingText(productCard, linesCount) {
+			if (null != productCard) {
+				const txtDecorator = productCard.querySelector('.txt-decorator');
+				if (null != txtDecorator) {
+					const txtDecoratorWidth = getComputedStyle(txtDecorator).width;
 
-					const canvas = document.createElement( 'canvas' );
-					const ctx = canvas.getContext( '2d' );
+					const canvas = document.createElement('canvas');
+					const ctx = canvas.getContext('2d');
 
 
-					const font = getComputedStyle( productCard ).font;
+					const font = getComputedStyle(productCard).font;
 
 					// set the font size and type
 					ctx.font = font;
 
 					// get the width of the character 'm'
-					const charWidth = ctx.measureText( 'm' ).width;
-					const charCountPerLine = Math.round( parseFloat( txtDecoratorWidth ) / Math.round( charWidth ) );
-					const initialTxt = txtDecorator.dataset.text.replaceAll( /\t/g, '' ).replaceAll( /\n/g, ' ' );
+					const charWidth = ctx.measureText('m').width;
+					const charCountPerLine = Math.round(parseFloat(txtDecoratorWidth) / Math.round(charWidth));
+					const initialTxt = txtDecorator.dataset.text.replaceAll(/\t/g, '').replaceAll(/\n/g, ' ');
+					//there is no overflow - skip
+					if (txtDecorator.clientHeight === txtDecorator.scrollHeight) return;
 
-					if ( initialTxt.length <= charCountPerLine * lines ) return;
+					const lines = { 2: [0, 1], 3: [0, 1, 2] };
+					const splittedTxt = initialTxt.split(' ');
+					const linesSet = [];
+					let subString = '';
+					let lineIndex = 0;
 
-					const clampedTxt = initialTxt.substring( 0, ( charCountPerLine * lines ) ) + '.';
+					for (let i = 0; i < splittedTxt.length; i++) {
+						const isLastLine = lines[linesCount][lines.length - 1] === lineIndex;
+
+						const item = splittedTxt[i];
+
+
+						intermediateString = (subString + ' ' + item).trim();
+						const substringLength = intermediateString.length;
+console.log('%c LOG', 'color:red',{ intermediateString, lineIndex, isLastLine, linesCount, set: lines[linesCount] })
+						if (substringLength < charCountPerLine) {
+							subString = intermediateString;
+						} else if (substringLength > charCountPerLine) {
+							if (!isLastLine) {
+								linesSet[lineIndex] = [subString];
+								lineIndex++;
+								subString = item;
+								intermediateString = '';
+							}
+						} else {
+							subString = intermediateString.substring(0, charCountPerLine - 2) + '.';
+							linesSet[lineIndex] = [subString];
+						}
+
+					}
+
+
+					// Log to console
+
+
+					const clampedTxt = linesSet.flat(1).join(' ');
 					txtDecorator.textContent = clampedTxt;
 
 				}
@@ -613,21 +648,21 @@
 
 
 		let resizeObserver;
-		if ( isMob() ) {
-			clampLinkText( 3 );
-			window.addEventListener( "orientationchange", clampLinkText.bind( null, 3 ) );
+		if (isMob()) {
+			clampLinkText(3);
+			window.addEventListener("orientationchange", clampLinkText.bind(null, 3));
 		} else {
-			resizeObserver = new ResizeObserver( _ => {
+			resizeObserver = new ResizeObserver(_ => {
 				clampLinkText();
-			} );
+			});
 		}
-		const catalog = document.querySelector( '#catalog' );
-		resizeObserver?.observe( catalog );
+		const catalog = document.querySelector('#catalog');
+		resizeObserver?.observe(catalog);
 
-		window.addEventListener( "beforeunload", () => {
+		window.addEventListener("beforeunload", () => {
 			resizeObserver?.disconnect();
-			window.removeEventListener( "orientationchange", clampLinkText.bind( null, 3 ) );
-		} );
+			window.removeEventListener("orientationchange", clampLinkText.bind(null, 3));
+		});
 
 	</script>
 </body>
