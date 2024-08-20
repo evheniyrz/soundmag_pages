@@ -127,11 +127,14 @@
 }
 
 .catalog-link {
+  --padding-bottom: 6px;
+  --lines: 3;
   flex: 1;
   display: grid;
   grid-template-columns: 35px 1fr;
   grid-template-rows: repeat(2, auto);
   position: relative;
+  isolation: isolate;
   font-size: clamp(1.125rem, 0.9886rem + 0.6818vw, 1.5rem);
   font-weight: 700;
   line-height: clamp(1.2375rem, 1.158rem + 0.3976vw, 1.65rem);
@@ -142,6 +145,11 @@
 @media screen and (max-width: 900px) {
   .catalog-link {
     grid-template-columns: 25px 1fr;
+  }
+}
+@media screen and (min-width: 1025px) {
+  .catalog-link {
+    --lines: 2;
   }
 }
 
@@ -166,9 +174,24 @@
   color: #403f3f;
 }
 
+.catalog-link .txt-decorator-placeholder {
+  /* position: absolute; */
+  display: inline-block;
+  z-index: -1;
+  width: 100%;
+  max-height: calc(
+    var(--lines) * clamp(1.2375rem, 1.158rem + 0.3976vw, 1.65rem) +
+      var(--padding-bottom)
+  );
+  grid-column-start: 2;
+  grid-row-start: 1;
+  align-self: flex-start;
+  overflow: hidden;
+  color: transparent;
+  padding-bottom: var(--padding-bottom);
+}
+
 .catalog-link .txt-decorator {
-  --padding-bottom: 6px;
-  --lines: 3;
   display: inline-block;
   max-height: calc(
     var(--lines) * clamp(1.2375rem, 1.158rem + 0.3976vw, 1.65rem) +
@@ -180,12 +203,6 @@
   overflow: hidden;
   position: relative;
   padding-bottom: var(--padding-bottom);
-}
-
-@media screen and (min-width: 1200px) {
-  .catalog-link .txt-decorator {
-    --lines: 2;
-  }
 }
 
 .catalog-link .txt-decorator:after {
