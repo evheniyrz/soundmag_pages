@@ -597,39 +597,46 @@
 
 					// get the width of the character 'm'
 					const charWidth = ctx.measureText('m').width;
-					const charCountPerLine = Math.round(parseFloat(txtDecoratorWidth) / Math.round(charWidth));
+					const CPL = Math.round(parseFloat(txtDecoratorWidth) / Math.round(charWidth));
 					const initialTxt = txtDecorator.dataset.text.replaceAll(/\t/g, '').replaceAll(/\n/g, ' ');
 					//there is no overflow - skip
-					if (txtDecorator.clientHeight === txtDecorator.scrollHeight) return;
+					if (initialTxt.length ===CPL * linesCount || txtDecorator.clientHeight === txtDecorator.scrollHeight) return;
 
-					const lines = { 2: [0, 1], 3: [0, 1, 2] };
-					const splittedTxt = initialTxt.split(' ');
+					// const lines = { 2: [0, 1], 3: [0, 1, 2] };
+					// const splittedTxt = initialTxt.split(' ');
+					const whiteSpaceIndexes = [];
+					initialTxt.replace(/\s/g, (searchValue, i)=> {
+						whiteSpaceIndexes.push(i + 1);
+					});
+					whiteSpaceIndexes.push(initialTxt.length);
+
 					const linesSet = [];
 					let subString = '';
 					let lineIndex = 0;
+					let lastSearchIndex = 0;
+					let lastLine = false;
 
-					for (let i = 0; i < splittedTxt.length; i++) {
-						const isLastLine = lines[linesCount][lines.length - 1] === lineIndex;
+					for (let index = 0; index < whiteSpaceIndexes.length; index++) {
+						const wsIndex = whiteSpaceIndexes[index];
 
-						const item = splittedTxt[i];
+						subString = initialTxt.substring(lastSearchIndex, whiteSpaceIndexes[index +1]);
 
-
-						intermediateString = (subString + ' ' + item).trim();
-						const substringLength = intermediateString.length;
-console.log('%c LOG', 'color:red',{ intermediateString, lineIndex, isLastLine, linesCount, set: lines[linesCount] })
-						if (substringLength < charCountPerLine) {
-							subString = intermediateString;
-						} else if (substringLength > charCountPerLine) {
-							if (!isLastLine) {
-								linesSet[lineIndex] = [subString];
+						if(subString.length < CPL) {
+							continue;
+						}else {
+							if (lineIndex < linesCount - 1 && lastSearchIndex !== whiteSpaceIndexes[whiteSpaceIndexes.length - 1]) {
+								linesSet[lineIndex]= [subString.substring(0, wsIndex)];
+								lastSearchIndex = wsIndex;
 								lineIndex++;
-								subString = item;
-								intermediateString = '';
+								subString = '';
+								console.log('%c LINES SET', 'color:blue', whiteSpaceIndexes,linesSet, linesCount);
+							}else if(lineIndex === linesCount - 1 && lastSearchIndex !== whiteSpaceIndexes[whiteSpaceIndexes.length - 1]){
+								linesSet[lineIndex]= [subString.length < CPL?substring:subString.substring(0, CPL - 2) + '.'];
 							}
-						} else {
-							subString = intermediateString.substring(0, charCountPerLine - 2) + '.';
-							linesSet[lineIndex] = [subString];
+
 						}
+
+
 
 					}
 
