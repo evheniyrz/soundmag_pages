@@ -175,23 +175,11 @@
 }
 
 .catalog-link .txt-decorator-placeholder {
-  /* position: absolute; */
-  display: inline-block;
-  z-index: -1;
-  width: 100%;
-  max-height: calc(
-    var(--lines) * clamp(1.2375rem, 1.158rem + 0.3976vw, 1.65rem) +
-      var(--padding-bottom)
-  );
-  grid-column-start: 2;
-  grid-row-start: 1;
-  align-self: flex-start;
-  overflow: hidden;
   color: transparent;
-  padding-bottom: var(--padding-bottom);
 }
 
-.catalog-link .txt-decorator {
+.catalog-link .txt-decorator,
+.catalog-link .txt-decorator-placeholder {
   display: inline-block;
   max-height: calc(
     var(--lines) * clamp(1.2375rem, 1.158rem + 0.3976vw, 1.65rem) +
