@@ -61,7 +61,7 @@
   }
 }
 
-.product-card{
+.product-card {
   font-size: clamp(1.125rem, 0.9886rem + 0.6818vw, 1.5rem);
   font-weight: 700;
   line-height: clamp(1.2375rem, 1.158rem + 0.3976vw, 1.65rem);
@@ -180,12 +180,7 @@
   color: #403f3f;
 }
 
-.catalog-link .txt-decorator-placeholder {
-  color: transparent;
-}
-
-.catalog-link .txt-decorator,
-.catalog-link .txt-decorator-placeholder {
+.catalog-link .txt-decorator {
   display: inline-block;
   max-height: calc(
     var(--lines) * clamp(1.2375rem, 1.158rem + 0.3976vw, 1.65rem) +
