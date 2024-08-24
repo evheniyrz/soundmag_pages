@@ -15,9 +15,6 @@ export default function prepareClampingText(productCard, linesCount) {
     /**
      * @type HTMLElement
      */
-    const txtDecoratorPlaceholder = productCard.querySelector(
-      ".txt-decorator-placeholder"
-    );
 
     if (null != txtDecorator) {
       const canvas = document.createElement("canvas");
@@ -28,9 +25,7 @@ export default function prepareClampingText(productCard, linesCount) {
       // set the font size and type
       ctx.font = font;
 
-      const {
-        clientWidth: placeholderClientWidth,
-      } = txtDecoratorPlaceholder;
+      const { clientWidth: decoratorClientWidth } = txtDecorator;
 
       /**
        * @type string
@@ -38,20 +33,19 @@ export default function prepareClampingText(productCard, linesCount) {
       const initialTxt = txtDecorator.dataset.text
         .replaceAll(/\t/g, "")
         .replaceAll(/\n/g, "");
-      const initialTxtLength = ctx.measureText(initialTxt).width;
+      const initialTxtWidth = ctx.measureText(initialTxt).width;
 
       const whiteSpaceIndexes = [];
-      initialTxt.replace(/\s/g, (searchValue, i) => {
+      initialTxt.replace(/\s/g, (_, i) => {
         whiteSpaceIndexes.push(i);
       });
 
-
       if (
         whiteSpaceIndexes.length <= 2 &&
-        initialTxtLength <=
-        Math.floor(placeholderClientWidth) * linesCount
+        initialTxtWidth <= Math.floor(decoratorClientWidth) * linesCount
       )
         return;
+
       // last index of text
       whiteSpaceIndexes.push(initialTxt.length);
 
@@ -59,7 +53,7 @@ export default function prepareClampingText(productCard, linesCount) {
       let rowString = "";
       let lastSearchCharIndex = 0;
       let w_sIndex = 0;
-      let rowTxtLength = 0;
+      let rowTxtWidth = 0;
 
       linesIterator: for (
         let lineIndex = 0;
@@ -77,9 +71,7 @@ export default function prepareClampingText(productCard, linesCount) {
           lastSearchCharIndex = whiteSpaceIndexes[w_sIndex];
           w_sIndex++;
 
-          rowTxtLength = Math.floor(
-            ctx.measureText(rowString.trimStart()).width
-          );
+          rowTxtWidth = Math.floor(ctx.measureText(rowString).width);
           isLastSearchIndex =
             lastSearchCharIndex ===
             whiteSpaceIndexes[whiteSpaceIndexes.length - 1];
@@ -92,10 +84,10 @@ export default function prepareClampingText(productCard, linesCount) {
 
           (!isLastLine &&
             !isLastSearchIndex &&
-            rowTxtLength < placeholderClientWidth) ||
+            rowTxtWidth < decoratorClientWidth) ||
           (isLastLine &&
             !isLastSearchIndex &&
-            rowTxtLength < placeholderClientWidth)
+            rowTxtWidth < decoratorClientWidth)
         );
 
         /**
@@ -106,13 +98,22 @@ export default function prepareClampingText(productCard, linesCount) {
         if (
           isLastLine &&
           isLastSearchIndex &&
-          rowTxtLength > placeholderClientWidth
+          rowTxtWidth > decoratorClientWidth
         ) {
-          const CPL = Math.round(
-            Math.floor(placeholderClientWidth) /
-            Math.round(ctx.measureText("o").width)
+          const singleCharWidth = Math.floor(
+            Math.floor(ctx.measureText(rowString).width) / rowString.length // count of text symbols
           );
-          linesSet[lineIndex] = [rowString.substring(0, CPL - 1) + "."];
+          /**
+           * @description Char Per Line
+           * @type {number} CPL
+           */
+          const CPL = Math.floor(decoratorClientWidth / singleCharWidth);
+          /**
+           * remove space character at the beginning of the line. because the browser removes this character
+           */
+          linesSet[lineIndex] = [
+            rowString.trimStart().substring(0, CPL - 3) + ".",
+          ];
         }
 
         /**
@@ -125,13 +126,13 @@ export default function prepareClampingText(productCard, linesCount) {
         if (
           (!isLastLine &&
             isLastSearchIndex &&
-            rowTxtLength > placeholderClientWidth) ||
+            rowTxtWidth > decoratorClientWidth) ||
           (!isLastLine &&
             !isLastSearchIndex &&
-            rowTxtLength > placeholderClientWidth)
+            rowTxtWidth > decoratorClientWidth)
         ) {
           const rightmost_W_S = rowString.trimEnd().lastIndexOf(" ");
-          linesSet[lineIndex] = [rowString.substring(0, rightmost_W_S)];
+          linesSet[lineIndex] = [rowString.trim().substring(0, rightmost_W_S)];
         }
         /**
          * если последняя строка и длина подстроки меньше/равно ширины блока
@@ -140,13 +141,13 @@ export default function prepareClampingText(productCard, linesCount) {
          * - возвращаем всю строку
          */
         if (
-          (isLastLine && rowTxtLength <= placeholderClientWidth) ||
+          (isLastLine && rowTxtWidth <= decoratorClientWidth) ||
           (!isLastLine &&
             isLastSearchIndex &&
-            rowTxtLength <= placeholderClientWidth) ||
+            rowTxtWidth <= decoratorClientWidth) ||
           (!isLastLine &&
             !isLastSearchIndex &&
-            rowTxtLength <= placeholderClientWidth)
+            rowTxtWidth <= decoratorClientWidth)
         ) {
           linesSet[lineIndex] = [rowString];
         }
@@ -160,10 +161,10 @@ export default function prepareClampingText(productCard, linesCount) {
         if (
           (!isLastLine &&
             isLastSearchIndex &&
-            rowTxtLength > placeholderClientWidth) ||
+            rowTxtWidth > decoratorClientWidth) ||
           (!isLastLine &&
             !isLastSearchIndex &&
-            rowTxtLength > placeholderClientWidth)
+            rowTxtWidth > decoratorClientWidth)
         ) {
           w_sIndex -= 1;
           lastSearchCharIndex = whiteSpaceIndexes[w_sIndex - 1];
@@ -176,7 +177,7 @@ export default function prepareClampingText(productCard, linesCount) {
         if (
           !isLastLine &&
           (isLastSearchIndex || null == lastSearchCharIndex) &&
-          rowTxtLength <= placeholderClientWidth
+          rowTxtWidth <= decoratorClientWidth
         ) {
           break linesIterator;
         }
