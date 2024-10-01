@@ -61,6 +61,13 @@
   }
 }
 
+.product-card {
+  font-size: clamp(1.125rem, 0.9886rem + 0.6818vw, 1.5rem);
+  font-weight: 700;
+  line-height: clamp(1.2375rem, 1.158rem + 0.3976vw, 1.65rem);
+  position: relative;
+}
+
 .product-card .img-wrapper .brand-link,
 .product-card .img-wrapper .brand-logo {
   display: none;
@@ -90,15 +97,18 @@
   justify-content: center;
   align-items: center;
   position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  inset: 0;
   font-size: clamp(0.8125rem, 0.5625rem + 1.25vw, 1.5rem);
   font-weight: 700;
   line-height: 26.4px;
   color: #403f3f;
+  z-index: 1;
+}
+
+.brand-style .product-card .img-wrapper .brand-link .brand-name {
   width: 100%;
-  min-height: clamp(1.75rem, 1.25rem + 2.5vw, 3.125rem);
+  padding: calc(clamp(1.75rem, 1.25rem + 2.5vw, 3.125rem) / 4);
+  text-align: center;
   background-color: #ffffff;
 }
 
@@ -127,20 +137,34 @@
 }
 
 .catalog-link {
+  --padding-bottom: 6px;
+  --lines: 3;
+  flex: 1;
   display: grid;
   grid-template-columns: 40px 1fr;
   grid-template-rows: repeat(2, auto);
-  position: relative;
-  font-size: clamp(1.125rem, 0.9886rem + 0.6818vw, 1.5rem);
-  font-weight: 700;
-  line-height: clamp(1.2375rem, 1.158rem + 0.3976vw, 1.65rem);
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
   color: #403f3f;
   padding-top: clamp(0.9375rem, 0.8239rem + 0.5682vw, 1.25rem);
+  z-index: 1;
+}
+
+.catalog-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
 }
 
 @media screen and (max-width: 900px) {
   .catalog-link {
     grid-template-columns: 30px 1fr;
+  }
+}
+@media screen and (min-width: 1025px) {
+  .catalog-link {
+    --lines: 2;
   }
 }
 
@@ -166,16 +190,20 @@
 }
 
 .catalog-link .txt-decorator {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  line-clamp: 2;
-  -webkit-line-clamp: 2;
+  display: inline-block;
+  max-height: calc(
+    var(--lines) * clamp(1.2375rem, 1.158rem + 0.3976vw, 1.65rem) +
+      var(--padding-bottom)
+  );
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
   grid-column-start: 2;
   grid-row-start: 1;
   align-self: flex-start;
   overflow: hidden;
   position: relative;
-  padding-bottom: 4px;
+  padding-bottom: var(--padding-bottom);
 }
 
 .catalog-link .txt-decorator:after {
