@@ -65,6 +65,7 @@
   font-size: clamp(1.125rem, 0.9886rem + 0.6818vw, 1.5rem);
   font-weight: 700;
   line-height: clamp(1.2375rem, 1.158rem + 0.3976vw, 1.65rem);
+  position: relative;
 }
 
 .product-card .img-wrapper .brand-link,
@@ -96,15 +97,18 @@
   justify-content: center;
   align-items: center;
   position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  inset: 0;
   font-size: clamp(0.8125rem, 0.5625rem + 1.25vw, 1.5rem);
   font-weight: 700;
   line-height: 26.4px;
   color: #403f3f;
+  z-index: 1;
+}
+
+.brand-style .product-card .img-wrapper .brand-link .brand-name {
   width: 100%;
-  min-height: clamp(1.75rem, 1.25rem + 2.5vw, 3.125rem);
+  padding: calc(clamp(1.75rem, 1.25rem + 2.5vw, 3.125rem) / 4);
+  text-align: center;
   background-color: #ffffff;
 }
 
@@ -139,13 +143,18 @@
   display: grid;
   grid-template-columns: 40px 1fr;
   grid-template-rows: repeat(2, auto);
-  position: relative;
-  isolation: isolate;
   font-size: inherit;
   font-weight: inherit;
   line-height: inherit;
   color: #403f3f;
   padding-top: clamp(0.9375rem, 0.8239rem + 0.5682vw, 1.25rem);
+  z-index: 1;
+}
+
+.catalog-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
 }
 
 @media screen and (max-width: 900px) {
