@@ -289,8 +289,7 @@ form#sertificates-order-form label:has(input:checked) {
   padding-top: 20px;
 }
 
-.publish-date-container,
-.review-author {
+.publish-date-container {
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
@@ -301,6 +300,7 @@ form#sertificates-order-form label:has(input:checked) {
 }
 
 .review-action-icon {
+  display: inline-block;
   width: 30px;
   aspect-ratio: 1/1;
   background-repeat: no-repeat;
