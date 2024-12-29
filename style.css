@@ -283,6 +283,45 @@ form#sertificates-order-form label:has(input:checked) {
   font-size: clamp(0.8125rem, 0.5833rem + 0.9778vw, 1.5rem);
   color: #666666;
 }
+
+.review-container,
+.review-content-container {
+  padding-top: 20px;
+}
+
+.publish-date-container,
+.review-author {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}
+
+.review-content {
+  margin: 16px 0;
+}
+
+.review-action-icon {
+  width: 30px;
+  aspect-ratio: 1/1;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+.review-action-icon.replay {
+  background-image: url(/images/replay-icon.svg);
+}
+.review-action-icon.share {
+  background-image: url(/images/share-icon.svg);
+}
+.review-action-icon.like {
+  background-image: url(/images/like-icon.svg);
+}
+.review-action-icon.dislike {
+  background-image: url(/images/dislike-icon.svg);
+}
+
+/*  */
+
 /* #FA9600 */
 
 .stores-address-buttons-title {
@@ -309,6 +348,15 @@ a.link-to-map-stores {
   line-height: 20px;
   font-size: 0.9375rem;
   color: #666666;
+}
+
+@media screen and (max-width: 400px) {
+  section.sertificates_content {
+  --side-indents: 10px;
+  }
+  .rating-symbols {
+  letter-spacing: unset;
+}
 }
 
 @media screen and (min-width: 1024px) {
