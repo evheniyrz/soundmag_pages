@@ -23,7 +23,6 @@ section.certificates_content {
 }
 
 .content-block h2 {
-  /* font-size: clamp(1.5rem, 1.05rem + 2.25vw, 3.75rem); */
   font-size: clamp(2.5rem, 2.0833rem + 1.7778vw, 3.75rem);
   font-weight: 700;
   margin: 20px 0;
@@ -353,23 +352,23 @@ form#certificates-order-form label:has(input:checked) {
 
 /*  */
 
-.sertificate-simple-rules
+.certificate-simple-rules
   .custom__list
   .custom__list__item:not(:last-child)
   .list_item__description {
   font-weight: 400;
 }
 
-.sertificate-simple-rules .custom__list .custom__list__item picture {
+.certificate-simple-rules .custom__list .custom__list__item picture {
   flex: 1 0 100%;
 }
 
-.sertificate-simple-rules .custom__list .custom__list__item picture img {
+.certificate-simple-rules .custom__list .custom__list__item picture img {
   width: 100%;
   aspect-ratio: 3.13 / 1;
 }
 
-/* enterprise-sertificate */
+/* enterprise-certificate */
 .profile-and-details-data .profile-data {
   font-family: inherit;
   gap: 0 20px;
@@ -568,7 +567,7 @@ a.link-to-map-stores {
     aspect-ratio: 3.3/1;
   }
 
-  .sertificate-simple-rules .custom__list {
+  .certificate-simple-rules .custom__list {
     column-count: 2;
     -moz-column-count: 2;
     -webkit-column-count: 2;
